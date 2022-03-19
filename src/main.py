@@ -2,11 +2,18 @@ import json
 import os
 from collections import defaultdict
 from colorama import Fore, Back, Style
-from getpass import getpass
 from random import choice
 # Encase letter in a box
 def encase_letter(letter):
     return " " + letter + " "
+
+# Check the validity of the input word
+def validate_word(word):
+    all_verbs = {}
+    with open("words/verbs.txt", "r") as verb_file:
+        all_verbs=verb_file.read().splitlines()
+    valid = word.lower() in all_verbs
+    return valid
 
 def get_random_word():
     freq_verbs = {}
@@ -50,25 +57,33 @@ def print_formatted_text(text, letter_validity):
         print()
 
 def main():
-    os.system('cls' if os.name == 'nt' else 'clear')
+    replay = True
+    while replay:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("Welcome to VERBLE!")
+        print("You have 6 attempts to guess the 5-letter verb.")
+        word = get_random_word().upper()
+        i = 0
+        while i < 6:
+            guess = input("\nGuess " + str(i+1) + ":").upper()
+            if len(guess) != 5:
+                print("Invalid guess. Please enter a 5-letter verb.")
+                continue
+            elif not validate_word(guess):
+                print("Invalid guess. Please enter a valid verb.")
+                continue
+            else:
+                i += 1
 
-    print("Welcome to VERBLE!")
-    print("You have 6 attempts to guess the 5-letter word.")
-    word = get_random_word().upper()
-    for i in range(6):
-        guess = getpass("\nGuess " + str(i+1) + ":").upper()
-        if len(guess) != 5:
-            print("Invalid guess. Please enter a 5-letter word.")
-            continue
-        validity = check_guess(guess, word)
-        print_formatted_text(guess,validity)
-        if (all(validity)) == True:
-            print("\n"+Fore.BLACK + Back.CYAN +"YOU \nWIN!"+ Style.RESET_ALL+"\n")
-            break
-    else: 
-        print("\n"+Fore.BLACK + Back.MAGENTA +"YOU  \nLOSE!"+ Style.RESET_ALL+"\n")
-        print("The word was: ")
-        print_formatted_text(word, [True]*len(word))
-
+            validity = check_guess(guess, word)
+            print_formatted_text(guess,validity)
+            if (all(validity)) == True:
+                print("\n"+Fore.BLACK + Back.CYAN +"YOU \nWIN!"+ Style.RESET_ALL+"\n")
+                break
+        else: 
+            print("\n"+Fore.BLACK + Back.MAGENTA +"YOU  \nLOSE!"+ Style.RESET_ALL+"\n")
+            print("The word was: ")
+            print_formatted_text(word, [True]*len(word))
+        replay = input("\nPlay again? (y/n)").lower() == "y"
 if __name__ == "__main__":
     main()
