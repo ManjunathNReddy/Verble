@@ -1,4 +1,4 @@
-Verble is a basic command line version of Wordle with more verbs and fewer nouns.
+Verble is a basic command line version of Wordle with mostly verbs and a few nouns.
 
 ## Installation
 - Clone the repo and install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
