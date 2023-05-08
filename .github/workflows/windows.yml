@@ -16,9 +16,9 @@ jobs:
         echo "tag=$(Get-Date -Format 'yyyy-MM-dd')-windows" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       id: get_tag
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Setup Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: '3.x'
     - name: Install dependencies
@@ -30,7 +30,7 @@ jobs:
         pyinstaller --name "VERBLE" --add-data "words;words" --onefile --clean --icon "icon.ico" src/main.py
     - name: Create Release
       id: create_release
-      uses: actions/create-release@v1
+      uses: actions/create-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -41,7 +41,7 @@ jobs:
         prerelease: false
     - name: Upload release asset
       id: upload-release-asset
-      uses: actions/upload-release-asset@v1
+      uses: actions/upload-release-asset@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
