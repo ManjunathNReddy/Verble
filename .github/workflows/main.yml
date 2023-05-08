@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest]#, macos-latest, windows-latest]
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -24,7 +24,7 @@ jobs:
         pip install pyinstaller
     - name: Build executable
       run: |
-        pyinstaller --name "VERBLE" --add-data "words;words" --onefile --clean --icon "icon.ico" src/main.py
+        pyinstaller --name "VERBLE" --add-data "words:words" --onefile --clean --icon "icon.ico" src/main.py
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
