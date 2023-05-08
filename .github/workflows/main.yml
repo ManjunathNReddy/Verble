@@ -14,7 +14,6 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
     - name: Get tag name from date and time
-      shell: bash
       run: echo "tag=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
       id: get_tag
     - name: Checkout code
@@ -33,14 +32,30 @@ jobs:
         else 
           pyinstaller --name "VERBLE" --add-data "words:words" --onefile --clean --icon "icon.ico" src/main.py
         fi
+      env:
+        tag: ${{ steps.get_tag.outputs.tag }}
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: VERBLE-${{ matrix.os }}-${{ steps.get_tag.outputs.tag }}
+        path: dist/VERBLE
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: VERBLE-${{ matrix.os }}-${{ needs.build.outputs.tag }}
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.get_tag.outputs.tag }}
-        release_name: Release ${{ steps.get_tag.outputs.tag }}
+        tag_name: ${{ needs.build.outputs.tag }}
+        release_name: Release ${{ needs.build.outputs.tag }}
         body: Auto-generated release
         draft: false
         prerelease: false
@@ -51,6 +66,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: dist/VERBLE
-        asset_name: VERBLE-${{ matrix.os }}
+        asset_path: ${{ github.event.release.assets[0].name }}
+        asset_name: ${{ github.event.release.assets[0].name }}
         asset_content_type: application/octet-stream
