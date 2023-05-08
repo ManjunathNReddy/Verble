@@ -13,9 +13,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
-    - name: Get tag name from ref
+    - name: Get tag name from date and time
       shell: bash
-      run: echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      run: echo "tag=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_ENV
       id: get_tag
     - name: Checkout code
       uses: actions/checkout@v2
@@ -28,7 +28,11 @@ jobs:
         pip install pyinstaller
     - name: Build executable
       run: |
-        pyinstaller --name "VERBLE" --add-data "words:words" --onefile --clean --icon "icon.ico" src/main.py
+        if [ "${{ matrix.os }}" = "windows-latest" ]; then 
+          pyinstaller --name "VERBLE" --add-data "words;words" --onefile --clean --icon "icon.ico" src/main.py
+        else 
+          pyinstaller --name "VERBLE" --add-data "words:words" --onefile --clean --icon "icon.ico" src/main.py
+        fi
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
