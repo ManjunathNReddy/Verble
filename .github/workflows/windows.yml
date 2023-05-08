@@ -14,7 +14,6 @@ jobs:
       shell: powershell
       run: |
         echo "tag=$(Get-Date -Format 'yyyy-MM-dd')" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-      Add-Content -Path $env:GITHUB_ENV -Value "name=$value"
       id: get_tag
     - name: Checkout code
       uses: actions/checkout@v2
