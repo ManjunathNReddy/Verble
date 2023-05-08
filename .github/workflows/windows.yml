@@ -23,11 +23,11 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: |
-        pip install pyinstaller
+        pip install pyinstaller colorama
     - name: Build executable
       shell: powershell
       run: |
-        pyinstaller --name "VERBLE" --add-data "words;words" --onefile --clean --icon "icon.ico" src/main.py
+        pyinstaller --name "VERBLE" --add-data "words;words" --onefile --clean --icon "icon.ico"  src/main.py
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
