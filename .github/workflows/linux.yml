@@ -12,7 +12,7 @@ jobs:
     steps:
     - name: Get tag name from date and time
       run: |
-        echo "tag=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
+        echo "tag=$(date +'%Y-%m-%d'+'-Ubuntu')" >> "$GITHUB_ENV"
       id: get_tag
     - name: Checkout code
       uses: actions/checkout@v3
