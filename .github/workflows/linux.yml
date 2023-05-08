@@ -12,7 +12,7 @@ jobs:
     steps:
     - name: Get tag name from date and time
       run: |
-        echo "tag=$(date +'%Y-%m-%d-%H-%M-%S')" >> $GITHUB_OUTPUT
+        echo "tag=$(date +'%Y-%m-%d-%H-%M-%S')" >> "$GITHUB_ENV"
       id: get_tag
     - name: Checkout code
       uses: actions/checkout@v2
@@ -32,8 +32,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.get_tag.outputs.tag }}
-        release_name: Release ${{ steps.get_tag.outputs.tag }}
+        tag_name: ${{ env.tag }}
+        release_name: Release ${{ env.tag }}
         body: Auto-generated release
         draft: false
         prerelease: false
