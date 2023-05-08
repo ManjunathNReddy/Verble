@@ -1,7 +1,7 @@
 Verble is a command-line version of Wordle that mainly features verbs, with a few nouns thrown in. Here's how you can install and play the game:
 
 ## Github actions
-- The game is automatically built with Github actions, so you can download it from the releases page
+- The game is automatically built with Github actions, so you can download it from "releases"
 
 ## Installation with PyInstaller
 - Install [PyInstaller](https://www.pyinstaller.org/)
