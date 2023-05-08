@@ -27,10 +27,10 @@ jobs:
         pip install pyinstaller
     - name: Build executable
       run: |
-        if [ "${{ matrix.os }}" = "windows-latest" ]; then 
-          pyinstaller --name "VERBLE" --add-data "words;words" --onefile --clean --icon "icon.ico" src/main.py
-        else 
+        if [ "${{ matrix.os }}" != "windows-latest" ]; then 
           pyinstaller --name "VERBLE" --add-data "words:words" --onefile --clean --icon "icon.ico" src/main.py
+        else 
+          pyinstaller --name "VERBLE" --add-data "words;words" --onefile --clean --icon "icon.ico" src/main.py
         fi
       env:
         tag: ${{ steps.get_tag.outputs.tag }}
