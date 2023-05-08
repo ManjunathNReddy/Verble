@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 from collections import defaultdict
 from colorama import Fore, Back, Style
 from colorama import init as colorama_init
@@ -7,8 +8,16 @@ from random import choice, randrange
 from pathlib import Path
 colorama_init(autoreset=True)
 
-# Set path to parent directory of the code file
-WORDS_PATH = Path(__file__).resolve().parent.parent / "words"
+# |CONSTANTS| #
+
+WORDS_PATH = None
+if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+    # Running in a PyInstaller bundle
+    WORDS_PATH = Path(sys._MEIPASS) / "words"
+else:
+    # Running in a normal Python environment
+    WORDS_PATH = Path(__file__).resolve().parent.parent / "words"
+
 
 # Load words : top verbs for choosing and all verbs for checking
 TOP_VERBS, VERBS = [], []
@@ -39,8 +48,8 @@ HINT_INFO = f"Call {HINTER} for Hints!"
 INVALID_GUESS_TEXT = f"Nope! Please enter a {NUM_LETTERS}-letter VERB."
 UNRECOGNIZED_GUESS_TEXT = "That's obscure! Please enter a VERB."
 LOSE_REVEAL = "The word was: "
-BIG_WIN_TEXT = "\nYOU \nWIN!\n"
-BIG_LOSE_TEXT = "\nYOU  \nLOSE!\n"
+WIN_TEXT = "YOU WIN!"
+LOSE_TEXT = "YOU LOSE!"
 AGAIN = "Play again? [y/n]"
 THANKS = "Thanks for playing VERBLE!"
 HINT_BALANCE = lambda hints: f"[hints left: {hints}]"
@@ -169,12 +178,15 @@ def play():
             if (all(validity)) == True:
                 title = TITLE_BY_GUESSES.get(i, TITLE_BY_GUESSES[6])
                 color = COLOR_BY_GUESSES.get(i, TITLE_BY_GUESSES[6])
-
-                print_color_text(BIG_WIN_TEXT,WIN_COLOR)
+                print()
+                print_color_text(WIN_TEXT,WIN_COLOR)
+                print()
                 print_color_text(WIN_TITLE(title),color)
                 break
         else: 
-            print_color_text(BIG_LOSE_TEXT,LOSE_COLOR)
+            print()
+            print_color_text(LOSE_TEXT,LOSE_COLOR)
+            print()
             print(LOSE_REVEAL)
             print_formatted_text(word, [True]*len(word))
         print()
@@ -183,6 +195,7 @@ def play():
         replay = input(AGAIN).lower() == "y"
     print()
     print_color_text(THANKS, INTERACT_COLOR)
+    input()
 
 if __name__ == "__main__":
     play()
