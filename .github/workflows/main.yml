@@ -13,6 +13,10 @@ jobs:
       matrix:
         os: [ubuntu-latest]#, macos-latest, windows-latest]
     steps:
+    - name: Get tag name from ref
+      shell: bash
+      run: echo "::set-output name=tag::${GITHUB_REF#refs/tags/}"
+      id: get_tag
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Setup Python
@@ -31,8 +35,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: '1.0.0'
-        release_name: ${{ tag_name }}
+        tag_name: ${{ steps.get_tag.outputs.tag }}
+        release_name: Release ${{ steps.get_tag.outputs.tag }}
         body: Auto-generated release
         draft: false
         prerelease: false
