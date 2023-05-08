@@ -12,12 +12,12 @@ jobs:
     steps:
     - name: Get tag name from date and time
       run: |
-        echo "tag=$(date +'%Y-%m-%d-%H-%M-%S')" >> "$GITHUB_ENV"
+        echo "tag=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
       id: get_tag
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Setup Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: '3.x'
     - name: Install dependencies
