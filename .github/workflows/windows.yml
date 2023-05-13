@@ -23,7 +23,7 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: |
-        pip install pyinstaller colorama
+        pip install pyinstaller blessed
     - name: Build executable
       shell: powershell
       run: |

@@ -22,7 +22,7 @@ jobs:
         python-version: '3.x'
     - name: Install dependencies
       run: |
-        pip install pyinstaller colorama
+        pip install pyinstaller blessed
     - name: Build executable
       run: |
         pyinstaller --name "VERBLE" --add-data "words:words" --onefile --clean --icon "icon.ico" src/main.py

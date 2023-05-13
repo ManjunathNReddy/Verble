@@ -2,11 +2,10 @@ import json
 import os
 import sys
 from collections import defaultdict
-from colorama import Fore, Back, Style
-from colorama import init as colorama_init
+from blessed import Terminal
 from random import choice, randrange
 from pathlib import Path
-colorama_init(autoreset=True)
+term = Terminal()
 
 # |CONSTANTS| #
 
@@ -60,13 +59,12 @@ WIKI = lambda word: f"https://en.wiktionary.org/wiki/{word.lower()}#Verb"
 TITLE_BY_GUESSES = { 1: "Master", 2: "Wizard", 3: "Mage", 4: "Warrior", 5: "Knight", 6: "Journeyman" }
 
 # 0 guesses = win, -1 guesses = lose
-COLOR_BY_GUESSES = { -1: Back.RED, 0: Back.BLUE, 1: Back.MAGENTA, 2: Back.CYAN, 3: Back.CYAN, 4: Back.GREEN, 5: Back.GREEN, 6: Back.WHITE }
-COLOR_BY_VALIDITY = { True: Back.GREEN, False: Back.YELLOW, None: Back.RED }
+COLOR_BY_GUESSES = { -1: 'red', 0: 'blue', 1: 'cyan', 2: 'orange', 3: 'purple', 4: 'lightseagreen', 5: 'green', 6: 'snow' }    
+COLOR_BY_VALIDITY = { True: 'green', False: 'yellow', None: 'red' }
 WIN_COLOR = COLOR_BY_GUESSES[0]
 LOSE_COLOR = COLOR_BY_GUESSES[-1]
-INTERACT_COLOR = Fore.MAGENTA
-FORE_COLOR = Fore.BLACK
-HIGHLIGHT = Fore.YELLOW
+INTERACT_COLOR = 'magenta'
+HIGHLIGHT = 'yellow'
 
 # |HELPERS| #
 
@@ -79,8 +77,10 @@ def get_hint_balance(hints):
 def encase_letter(letter):
     return f" {letter} " 
 
-def print_color_text(text, color, end="\n"):
-    print(FORE_COLOR + color + text, end=end)
+def print_color_text(text, bg_color, end="\n"):
+    bg = getattr(term, bg_color)
+    color_text = bg(text)
+    print(color_text+term.normal, end=end)
 
 def print_formatted_text(text, letter_validity):
     print()
