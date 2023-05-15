@@ -1,3 +1,6 @@
+
+![Verble](./Example.png)
+
 Verble is a command-line version of Wordle that mainly features verbs, with a few nouns thrown in. Here's how you can install and play the game:
 
 ## Github actions
