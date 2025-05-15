@@ -8,7 +8,7 @@ def play():
 
     while replay:
         game = VerbleGame()
-
+        ui.reset()
         ui.display_text(WELCOME)
         ui.display_text(WELCOME_QUESTION)
         ui.display_text(HINT_INFO)

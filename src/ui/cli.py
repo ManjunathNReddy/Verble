@@ -1,5 +1,6 @@
 from blessed import Terminal
 from constants import COLOR_BY_VALIDITY, NUM_LETTERS
+from os import name, system
 from ui.interface import UI
 
 class CLI(UI):
@@ -37,3 +38,6 @@ class CLI(UI):
 
     def pause(self):
         input()
+
+    def reset(self):
+        system('cls' if name == 'nt' else 'clear')

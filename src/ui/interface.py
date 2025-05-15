@@ -18,3 +18,6 @@ class UI(ABC):
 
     @abstractmethod
     def pause(self): pass
+
+    @abstractmethod
+    def reset(self): pass    
