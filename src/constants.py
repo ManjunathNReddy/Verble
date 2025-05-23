@@ -1,7 +1,8 @@
 import json
 import sys
 from pathlib import Path
-from random import choice, randrange
+from random import choice
+from enum import Enum
 
 WORDS_PATH = None
 if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
@@ -31,6 +32,8 @@ HINTER = choice(NAMES)
 HINT_GREETING = "KONNICHIWA!"
 NO_HINT_TEXT = f"IYA, {HINTER} can't HELP!"
 PRICE_TEXT = "[PRICE: Big : 2 , Small : 1]"
+HintKind = Enum('Hint', ['small', 'big'])
+HINT_TYPE_BIG = "big"
 HINT_PROMPT = f"HAI, {HINTER} can HELP! Big HINT [b] / Small HINT [s]? [b/s]"
 HINT_SMALL_PROMPT = f"HAI, {HINTER} can HELP with Small HINT!"
 WELCOME = "Welcome to VERBLE, the ultimate verb guessing game!"
@@ -41,7 +44,7 @@ UNRECOGNIZED_GUESS_TEXT = "That's obscure! Please enter a VERB."
 LOSE_REVEAL = "The word was: "
 WIN_TEXT = "YOU WIN!"
 LOSE_TEXT = "YOU LOSE!"
-AGAIN = "Play again? [y/n]"
+AGAIN = "Play again? [y/n] "
 THANKS = "Thanks for playing VERBLE!"
 HINT_BALANCE = lambda hints: f"[hints left: {hints}]"
 GUESS_I = lambda i: f"Guess {i+1}:"

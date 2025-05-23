@@ -1,10 +1,11 @@
 from random import choice, randrange
-from collections import defaultdict
-from constants import TOP_VERBS, VERBS, NUM_LETTERS, NUM_HINTS, TITLE_BY_GUESSES, COLOR_BY_GUESSES
+from collections import Counter
+from constants import *
 
 class VerbleGame:
     def __init__(self):
         self.word = choice(TOP_VERBS).upper()
+        self._counts = Counter(self.word)
         self.hints = NUM_HINTS
         self.hint_indices = list(range(NUM_LETTERS))
         self.guesses = []
@@ -16,21 +17,15 @@ class VerbleGame:
     #   correct position: True, incorrect position: False, not in the word: None
     def check_guess(self, guess):
         guess = guess.upper()
-        validity = [None] * NUM_LETTERS
-        # number of matches per letter
-        match_count = defaultdict(int)
+        validity = [True if g == w else None for g, w in zip(guess, self.word)]
+        used_counts = Counter()
+        used_counts.update(g for g, w in zip(guess, self.word) if g == w)
 
-        for i, letter in enumerate(guess):
-            if letter == self.word[i]:
-                validity[i] = True
-                match_count[letter] += 1
-
-        for i, letter in enumerate(guess):
-            if validity[i] is None and letter in self.word:
-                if match_count[letter] < self.word.count(letter):
-                    validity[i] = False
-                    match_count[letter] += 1
-
+        for i, g in enumerate(guess):
+            if validity[i] is None and used_counts[g] < self._counts[g]:
+                validity[i] = False
+                used_counts[g] += 1
+        
         return validity
 
     def apply_guess(self, guess):
@@ -48,17 +43,17 @@ class VerbleGame:
         i = len(self.guesses)
         return TITLE_BY_GUESSES.get(i, TITLE_BY_GUESSES[6]), COLOR_BY_GUESSES.get(i, COLOR_BY_GUESSES[6])
 
-    def get_hint(self, kind="small"):
-        if not self.hint_indices or self.hints <= 0:
-            return [], self.hints
+    def get_hint_indices(self, kind=HintKind.small):
+        if not self.hint_indices or self.hints < 1:
+            return []
 
-        if kind == "big" and self.hints >= 2 and len(self.hint_indices) >= 2:
+        if kind == HintKind.big and self.hints > 1 and len(self.hint_indices) > 1:
             self.hints -= 2
-            return [self.hint_indices.pop(0), self.hint_indices.pop(-1)], self.hints
+            return [self.hint_indices.pop(0), self.hint_indices.pop(-1)]
         else:
             self.hints -= 1
             index = self.hint_indices.pop(randrange(len(self.hint_indices)))
-            return [index], self.hints
+            return [index]
 
     def get_answer(self):
         return self.word

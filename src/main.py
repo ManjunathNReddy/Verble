@@ -23,13 +23,13 @@ def play():
                     ui.display_text(NO_HINT_TEXT + " " + HINT_BALANCE(game.hints), INTERACT_COLOR)
                 elif game.hints == 1:
                     ui.display_text(HINT_SMALL_PROMPT, INTERACT_COLOR)
-                    indices, _ = game.get_hint()
+                    indices = game.get_hint_indices()
                     ui.show_hint(indices, game.word)
                 else:
                     ui.display_text(PRICE_TEXT + " " + HINT_BALANCE(game.hints), INTERACT_COLOR)
-                    ui.display_text(HINT_PROMPT, INTERACT_COLOR)
+                    ui.display_text(HINT_PROMPT, INTERACT_COLOR, end=" ")
                     hint_type = ui.get_input("").lower()
-                    indices, _ = game.get_hint("big" if hint_type == "b" else "small")
+                    indices = game.get_hint_indices(HintKind.big if hint_type == "b" else HintKind.small)
                     ui.show_hint(indices, game.word)
                 continue
 

@@ -1,5 +1,5 @@
 from blessed import Terminal
-from constants import COLOR_BY_VALIDITY, NUM_LETTERS
+from constants import COLOR_BY_VALIDITY, NUM_LETTERS, HIGHLIGHT
 from os import name, system
 from ui.interface import UI
 
@@ -9,9 +9,11 @@ class CLI(UI):
 
     def display_text(self, text, color=None, end="\n"):
         if color:
-            bg = getattr(self.term, color, None)
+            bg_attr = f'on_{color.lower()}'
+            bg = getattr(self.term, bg_attr, None)
             if bg:
-                print(bg(text) + self.term.normal, end=end)
+                fg = self.term.black
+                print(fg + bg + text + self.term.normal, end=end)
                 return
         print(text, end=end)
 
@@ -21,9 +23,9 @@ class CLI(UI):
     def show_guess_result(self, guess, validity):
         print()
         for i in range(len(guess)):
-            color = COLOR_BY_VALIDITY.get(validity[i], 'red')
+            color = COLOR_BY_VALIDITY.get(validity[i])
             self.display_text(f" {guess[i]} ", color, end="")
-        print()
+        print("\n\n")
 
     def show_hint(self, indices, word):
         display = ["?" for _ in range(NUM_LETTERS)]
@@ -34,7 +36,7 @@ class CLI(UI):
         self.show_guess_result(display, validity)
 
     def show_link(self, url):
-        self.display_text(url, "yellow")
+        self.display_text(url, HIGHLIGHT)
 
     def pause(self):
         input()
