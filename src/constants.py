@@ -12,13 +12,20 @@ else:
     # Running in a normal Python environment
     WORDS_PATH = Path(__file__).resolve().parent.parent / "words"
 
+# Sources
+CORPUS_VERBS = WORDS_PATH /"31K verbs.txt"
+FREQUENT_VERBS = WORDS_PATH /"frequent.json"
+
+# Verble words
+VERBLE_CORPUS = WORDS_PATH /"verbs.txt"
+VERBLE_FREQUENT = WORDS_PATH /"top_verbs.json"
 
 # Load words : top verbs for choosing and all verbs for checking
 TOP_VERBS, VERBS = [], []
-with open(WORDS_PATH /"top_verbs.json", "r") as frequent_verbs:
+with open(VERBLE_FREQUENT, "r") as frequent_verbs:
     freq_verbs = json.load(frequent_verbs)
     TOP_VERBS = list(freq_verbs.keys())
-with open(WORDS_PATH / "verbs.txt", "r") as verb_file:
+with open(VERBLE_CORPUS, "r") as verb_file:
         VERBS=verb_file.read().splitlines()
 
 # |SETTINGS| #
