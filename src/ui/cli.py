@@ -7,7 +7,7 @@ class CLI(UI):
     def __init__(self):
         self.term = Terminal()
 
-    def display_text(self, text, color=None, end="\n"):
+    def display_text(self, text="", color=None, end="\n"):
         if color:
             bg_attr = f'on_{color.lower()}'
             bg = getattr(self.term, bg_attr, None)
@@ -25,7 +25,7 @@ class CLI(UI):
         for i in range(len(guess)):
             color = COLOR_BY_VALIDITY.get(validity[i])
             self.display_text(f" {guess[i]} ", color, end="")
-        print("\n\n")
+        print()
 
     def show_hint(self, indices, word):
         display = ["?" for _ in range(NUM_LETTERS)]
