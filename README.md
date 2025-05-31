@@ -3,6 +3,8 @@
 
 **Verble** is a command-line adaptation of the popular Wordle game, with a primary focus on verbs and occasional inclusion of nouns.
 
+NEW! Checkout the latest TUI version of VERBLE : [Verble V2](https://github.com/ManjunathNReddy/Verble-V2)
+
 ---
 
 ## Download
